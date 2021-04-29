@@ -1,10 +1,13 @@
 import 'package:messenger/services/auth.dart';
+import 'package:messenger/services/database.dart';
 import 'package:messenger/views/chatRoomsScreen.dart';
 import 'package:messenger/views/signin.dart';
 import 'package:messenger/widget/widget.dart';
 import 'package:flutter/material.dart';
 
 class SignUp extends StatefulWidget {
+  final Function toggle;
+  SignUp(this.toggle);
   @override
   _SignUpState createState() => _SignUpState();
 }
@@ -15,19 +18,28 @@ class _SignUpState extends State<SignUp> {
   TextEditingController usernameEditingController = new TextEditingController();
 
   AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   singUp() async {
     if (formKey.currentState.validate()) {
+
+      Map<String, String> userInfo = {
+        'name': usernameEditingController.text,
+        'email': emailEditingController.text
+      };
+
+      //databaseMethods.uploadUserInfo(userInfo);
       setState(() {
         isLoading = true;
       });
 
-      await authMethods
+       authMethods
           .signUpWithEmailAndPassword(
               emailEditingController.text, passwordEditingController.text)
           .then((result) {
+        databaseMethods.uploadUserInfo(userInfo);
         Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => ChatRoom()));
       });
@@ -127,17 +139,17 @@ class _SignUpState extends State<SignUp> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SignIn()));
+                          widget.toggle();
                         },
-                        child: Text(
-                          "SignIn now",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              decoration: TextDecoration.underline),
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
+                          child: Text(
+                            "SignIn now",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                decoration: TextDecoration.underline),
+                          ),
                         ),
                       ),
                     ],

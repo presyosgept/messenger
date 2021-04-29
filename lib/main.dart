@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:messenger/helper/authenticate.dart';
 import 'package:messenger/views/signin.dart';
 import 'package:messenger/views/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,6 +29,6 @@ class _MyAppState extends State<MyApp> {
           accentColor: Color(0xff007EF4),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
-        home: SignIn());
+        home: Authenticate());
   }
 }

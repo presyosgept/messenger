@@ -1,4 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:messenger/helper/helperfunctions.dart';
 import 'package:messenger/services/auth.dart';
+import 'package:messenger/services/database.dart';
 import 'package:messenger/views/chatRoomsScreen.dart';
 import 'package:messenger/views/signup.dart';
 import 'package:messenger/widget/widget.dart';
@@ -6,7 +9,7 @@ import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggle;
-  SignIn (this.toggle);
+  SignIn(this.toggle);
 
   @override
   _SignInState createState() => _SignInState();
@@ -19,10 +22,22 @@ class _SignInState extends State<SignIn> {
   final formKey = GlobalKey<FormState>();
 
   bool isLoading = false;
+  QuerySnapshot snapshotUserInfo;
   AuthMethods authMethods = new AuthMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
 
   singIn() async {
     if (formKey.currentState.validate()) {
+      HelperFunctions.saveUserEmailSharedPreference(
+          emailEditingController.text);
+
+      databaseMethods
+          .getUserbyUserEmail(emailEditingController.text)
+          .then((result) {
+        snapshotUserInfo = result;
+        HelperFunctions.saveUserNameSharedPreference(
+            snapshotUserInfo.docs[0].data()["name"]);
+      });
       setState(() {
         isLoading = true;
       });
@@ -31,8 +46,11 @@ class _SignInState extends State<SignIn> {
           .signInWithEmailAndPassword(
               emailEditingController.text, passwordEditingController.text)
           .then((result) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        if (result != null) {
+          HelperFunctions.saveUserLoggedInSharedPreference(true);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => ChatRoom()));
+        }
       });
     }
   }
@@ -40,7 +58,7 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     // resizeToAvoidBottomInset: false,
+      // resizeToAvoidBottomInset: false,
       appBar: appBarMain(context),
       body: isLoading
           ? Container(
@@ -81,7 +99,6 @@ class _SignInState extends State<SignIn> {
                       ],
                     ),
                   ),
-                 
                   SizedBox(
                     height: 16,
                   ),
@@ -117,20 +134,21 @@ class _SignInState extends State<SignIn> {
                         "Don't have account? ",
                         style: simpleTextStyle(),
                       ),
-                        GestureDetector(
-                          onTap: (){
-                            widget.toggle();
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(vertical:8),
+                      GestureDetector(
+                        onTap: () {
+                          widget.toggle();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 8),
                           child: Text(
                             "Register now",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 decoration: TextDecoration.underline),
-                          ),),
+                          ),
                         ),
+                      ),
                     ],
                   ),
                 ],

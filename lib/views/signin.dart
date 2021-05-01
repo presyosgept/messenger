@@ -130,10 +130,10 @@ class _SignInState extends State<SignIn> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        "Don't have account? ",
-                        style: simpleTextStyle(),
-                      ),
+                      // Text(
+                      //   "Don't have account? ",
+                      //   style: simpleTextStyle(),
+                      // ),
                       GestureDetector(
                         onTap: () {
                           widget.toggle();
@@ -149,6 +149,9 @@ class _SignInState extends State<SignIn> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height:10.0
+                      )
                     ],
                   ),
                 ],

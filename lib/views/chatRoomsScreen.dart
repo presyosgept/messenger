@@ -6,6 +6,7 @@ import 'package:messenger/services/auth.dart';
 import 'package:messenger/services/database.dart';
 import 'package:messenger/views/conversation.dart';
 import 'package:messenger/views/search.dart';
+import 'package:messenger/views/searchForGroup.dart';
 import 'package:messenger/widget/widget.dart';
 
 class ChatRoom extends StatefulWidget {
@@ -27,13 +28,14 @@ class _ChatRoomState extends State<ChatRoom> {
             ? ListView.builder(
                 itemCount: snapshot.data.docs.length,
                 itemBuilder: (context, index) {
-                  return ChatRoomTile(snapshot.data.docs[index]
-                      .data()["chatroomId"]
-                      .toString()
-                      .replaceAll("_", "")
-                      .replaceAll(Constants.myName, ""),
-                      snapshot.data.docs[index].data()["chatroomId"],
-                      );
+                  return ChatRoomTile(
+                    snapshot.data.docs[index]
+                        .data()["chatroomId"]
+                        .toString()
+                        .replaceAll("_", "")
+                        .replaceAll(Constants.myName, ""),
+                    snapshot.data.docs[index].data()["chatroomId"],
+                  );
                 })
             : Container();
       },
@@ -58,6 +60,32 @@ class _ChatRoomState extends State<ChatRoom> {
     });
   }
 
+  createDialog(BuildContext context) {
+    TextEditingController chatId = new TextEditingController();
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Name of the group'),
+            content: TextField(
+              controller: chatId,
+            ),
+            actions: <Widget>[
+              MaterialButton(
+                  elevation: 5.0,
+                  child: Text('Ok'),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                SearchForGroup(chatRoomId: chatId.text)));
+                  })
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,16 +100,25 @@ class _ChatRoomState extends State<ChatRoom> {
               },
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(Icons.exit_to_app)))
+                  child: Icon(Icons.exit_to_app))),
+          GestureDetector(
+              onTap: () {
+                createDialog(context);
+              },
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Icon(Icons.group)))
         ],
       ),
       body: ChatRoomList(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.search),
-        onPressed: () {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => SearchScreen()));
-        },
+      floatingActionButton: Container(
+        child: FloatingActionButton(
+          child: Icon(Icons.search),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SearchScreen()));
+          },
+        ),
       ),
     );
   }

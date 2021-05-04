@@ -20,6 +20,8 @@ class _SearchForGroupState extends State<SearchForGroup> {
   String chatRoomIdFinal;
   List<String> users = [];
 
+
+
   QuerySnapshot searchSnapshot;
 
   Widget searchList() {
@@ -31,7 +33,9 @@ class _SearchForGroupState extends State<SearchForGroup> {
               return SearchTile(
                 userName: searchSnapshot.docs[index]['name'],
                 userEmail: searchSnapshot.docs[index]["email"],
+               
               );
+              
             },
           )
         : Container();
@@ -44,13 +48,12 @@ class _SearchForGroupState extends State<SearchForGroup> {
       setState(() {
         print(val);
         searchSnapshot = val;
-        //print(searchSnapshot.docs.length);
       });
     });
   }
 
-  //create Chatroom
   createChatroomAndStartConversation({String userName}) {
+  
     if (userName != Constants.myName) {
       String chatRoomIdFinal = widget.chatRoomId;
       if (users.length == 0) {
@@ -64,6 +67,7 @@ class _SearchForGroupState extends State<SearchForGroup> {
     } else {
       print("you cannot send message to yourself");
     }
+    return Container();
   }
 
   createChatroom() {
@@ -72,11 +76,12 @@ class _SearchForGroupState extends State<SearchForGroup> {
       "users": users,
       "chatroomId": widget.chatRoomId
     };
+    
     DatabaseMethods().createChatRoom(widget.chatRoomId, chatRoomMap);
-    Navigator.push(
+    Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => ConversationScreen(widget.chatRoomId)));
+            builder: (context) => ConversationScreen(widget.chatRoomId,widget.chatRoomId)));
   }
 
   Widget SearchTile({String userName, String userEmail}) {
@@ -100,7 +105,35 @@ class _SearchForGroupState extends State<SearchForGroup> {
                 Spacer(),
                 GestureDetector(
                   onTap: () {
-                    createChatroomAndStartConversation(userName: userName);
+                  
+                     return showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text("GROUPCHAT"),
+                    content: Text("Are you sure you want to add this person?"),
+                    actions: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                        createChatroomAndStartConversation(userName: userName);
+                        searchtextEditingController.text="";
+                        searchSnapshot=null;
+                        searchList();
+                        setState(() {
+                          
+                        });
+                        Navigator.of(ctx).pop();
+                        },
+                        child: Text("YES"),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                        },
+                        child: Text("NO"),
+                      ),
+                    ],
+                  ),
+                );
                   },
                   child: Container(
                     decoration: BoxDecoration(
@@ -113,7 +146,8 @@ class _SearchForGroupState extends State<SearchForGroup> {
               ],
             ),
           ],
-        ));
+        )
+        );
   }
 
   @override
@@ -147,6 +181,10 @@ class _SearchForGroupState extends State<SearchForGroup> {
                     GestureDetector(
                       onTap: () {
                         initiateSearch();
+
+                        // setState(() {
+                        //    initiateSearch();
+                        // });
                       },
                       child: Container(
                           height: 40,

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:messenger/helper/constants.dart';
+import 'package:messenger/views/chatRoomsScreen.dart';
 import 'package:messenger/widget/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
@@ -11,7 +12,8 @@ import 'package:messenger/services/database.dart';
 
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;
-  ConversationScreen(this.chatRoomId);
+  final String usernamee;
+  ConversationScreen(this.chatRoomId,this.usernamee);
 
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
@@ -64,7 +66,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     );
   }
 
-  Widget ChatMessageList() {
+  Widget get ChatMessageList {
     int value;
     return StreamBuilder(
         stream: chatMessagesStream,
@@ -169,14 +171,27 @@ class _ConversationScreenState extends State<ConversationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+//        resizeToAvoidBottomInset: false,
+// resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-            title: Text("${Constants.myName.toUpperCase()}",
+          leading: IconButton(
+    icon: Icon(Icons.arrow_back, color: Colors.black),
+    onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatRoom()))
+  ), 
+            title: Text("${widget.usernamee.toUpperCase()}",
                 style: biggerTextStyle())),
-        body: Container(
-            child: Stack(
+          
+        body: SingleChildScrollView(child: Container(
+        
+            child: Column(
+            //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ChatMessageList(),
+           // Container(height:70,child: ChatMessageList()),
+           Container(
+       height: MediaQuery.of(context).size.height /1.3,
+             child: ChatMessageList),
             Container(
+              
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: 70,
@@ -248,7 +263,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
               ),
             ),
           ],
-        )));
+        ))));
   }
 }
 
@@ -262,12 +277,14 @@ class MessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+    
       padding: EdgeInsets.only(
           left: isSendByMe ? 0 : 24, right: isSendByMe ? 24 : 0),
       margin: EdgeInsets.symmetric(vertical: 8),
       width: MediaQuery.of(context).size.width,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
+         // height: 60,
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           decoration: BoxDecoration(
               gradient: LinearGradient(

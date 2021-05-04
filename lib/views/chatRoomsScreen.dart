@@ -75,7 +75,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   elevation: 5.0,
                   child: Text('OKAY'),
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
@@ -91,11 +91,19 @@ class _ChatRoomState extends State<ChatRoom> {
     return Scaffold(
       // backgroundColor: Colors.red[700],
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Padding(
           padding: const EdgeInsets.only(right: 14.0),
           child: Text('Messages'),
         ),
         actions: [
+            GestureDetector(
+              onTap: () {
+                createDialog(context);
+              },
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Icon(Icons.group))),
           GestureDetector(
               onTap: () {
                 return showDialog(
@@ -117,6 +125,7 @@ class _ChatRoomState extends State<ChatRoom> {
                       FlatButton(
                         onPressed: () {
                           Navigator.of(ctx).pop();
+                          
                         },
                         child: Text("NO"),
                       ),
@@ -127,17 +136,14 @@ class _ChatRoomState extends State<ChatRoom> {
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Icon(Icons.exit_to_app))),
-          GestureDetector(
-              onTap: () {
-                createDialog(context);
-              },
-              child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(Icons.group))),
-          Container(
-              width: 95,
-              height: 30,
-              child: Center(child: Text(Constants.myName.toUpperCase())))
+        
+          // Container(
+          //     width: 95,
+          //     height: 30,
+          //     child: Center(child: 
+          //    // Text(Constants.myName.toUpperCase())
+          //      Text("${Constants.myName.toUpperCase()}",
+          //     )))
         ],
       ),
       body: ChatRoomList(),
@@ -145,7 +151,7 @@ class _ChatRoomState extends State<ChatRoom> {
         child: FloatingActionButton(
           child: Icon(Icons.search),
           onPressed: () {
-            Navigator.push(context,
+            Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => SearchScreen()));
           },
         ),
@@ -162,10 +168,10 @@ class ChatRoomTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(
+        Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => ConversationScreen(chatRoomId)));
+                builder: (context) => ConversationScreen(chatRoomId,userName)));
       },
       child: Container(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),

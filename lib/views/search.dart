@@ -54,10 +54,10 @@ class _SearchScreenState extends State<SearchScreen> {
         "chatroomId": chatRoomId
       };
       DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => ConversationScreen(chatRoomId)));
+              builder: (context) => ConversationScreen(chatRoomId,userName)));
     } else {
       print("you cannot send message to yourself");
     }
@@ -104,9 +104,9 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text('Search'),
-        // ),
+        appBar: AppBar(
+          title: Text('Search'),
+        ),
         body: SafeArea(
       child: Column(
         children: [

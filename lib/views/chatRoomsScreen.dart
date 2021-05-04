@@ -90,13 +90,35 @@ class _ChatRoomState extends State<ChatRoom> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat'),
+        title: Text('Messages'),
         actions: [
           GestureDetector(
               onTap: () {
-                authMethods.signOut();
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => Authenticate()));
+                return showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: Text("PPB"),
+                    content: Text("Are you sure you want to log out?"),
+                    actions: <Widget>[
+                      FlatButton(
+                        onPressed: () {
+                          authMethods.signOut();
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Authenticate()));
+                        },
+                        child: Text("YES"),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.of(ctx).pop();
+                        },
+                        child: Text("NO"),
+                      ),
+                    ],
+                  ),
+                );
               },
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16),
@@ -107,7 +129,11 @@ class _ChatRoomState extends State<ChatRoom> {
               },
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(Icons.group)))
+                  child: Icon(Icons.group))),
+          Container(
+              width: 50,
+              height: 30,
+              child: Center(child: Text(Constants.myName.toUpperCase())))
         ],
       ),
       body: ChatRoomList(),

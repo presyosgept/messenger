@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:messenger/helper/authenticate.dart';
 import 'package:messenger/helper/helperfunctions.dart';
-import 'package:messenger/views/chatRoomsScreen.dart';
-import 'package:messenger/views/signin.dart';
-import 'package:messenger/views/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {

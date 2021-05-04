@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:messenger/helper/constants.dart';
-import 'package:messenger/helper/helperfunctions.dart';
 import 'package:messenger/services/database.dart';
 import 'package:messenger/views/conversation.dart';
 import 'package:messenger/widget/widget.dart';
@@ -10,7 +9,7 @@ class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
-String _myName;
+// String _myName;
 class _SearchScreenState extends State<SearchScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController searchtextEditingController =
@@ -29,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
               );
             },
           )
-        : Container(color: Colors.pink, child: Text('Taler'));
+        : Container();
   }
 
 
@@ -117,7 +116,7 @@ Widget SearchTile({String userName,String userEmail}){
                       child: TextField(
                     controller: searchtextEditingController,
                     decoration: InputDecoration(
-                        hintText: 'search username',
+                        hintText: 'Search Username',
                         hintStyle: TextStyle(color: Colors.white54),
                         border: InputBorder.none),
                   )),

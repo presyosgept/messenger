@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:messenger/helper/constants.dart';
-import 'package:messenger/helper/helperfunctions.dart';
 import 'package:messenger/services/database.dart';
 import 'package:messenger/views/conversation.dart';
 import 'package:messenger/widget/widget.dart';

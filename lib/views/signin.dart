@@ -3,7 +3,6 @@ import 'package:messenger/helper/helperfunctions.dart';
 import 'package:messenger/services/auth.dart';
 import 'package:messenger/services/database.dart';
 import 'package:messenger/views/chatRoomsScreen.dart';
-import 'package:messenger/views/signup.dart';
 import 'package:messenger/widget/widget.dart';
 import 'package:flutter/material.dart';
 
@@ -61,9 +60,15 @@ class _SignInState extends State<SignIn> {
       // resizeToAvoidBottomInset: false,
       appBar: appBarMain(context),
       body: isLoading
-          ? Container(
-              child: Center(child: CircularProgressIndicator()),
-            )
+          ? Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                  child: Center(child: CircularProgressIndicator()),
+                ),
+              Text("Check Email kay murag do not exist siya",style: biggerTextStyle())
+            ],
+          )
           : Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: Column(

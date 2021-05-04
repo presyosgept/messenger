@@ -25,21 +25,21 @@ class _SignUpState extends State<SignUp> {
 
   singUp() async {
     if (formKey.currentState.validate()) {
-
       Map<String, String> userInfo = {
         'name': usernameEditingController.text,
         'email': emailEditingController.text
       };
 
-      HelperFunctions.saveUserEmailSharedPreference(emailEditingController.text);
-     HelperFunctions.saveUserNameSharedPreference(usernameEditingController.text);
-
+      HelperFunctions.saveUserEmailSharedPreference(
+          emailEditingController.text);
+      HelperFunctions.saveUserNameSharedPreference(
+          usernameEditingController.text);
 
       setState(() {
         isLoading = true;
       });
 
-       authMethods
+      authMethods
           .signUpWithEmailAndPassword(
               emailEditingController.text, passwordEditingController.text)
           .then((result) {

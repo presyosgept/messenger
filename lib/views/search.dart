@@ -9,6 +9,7 @@ class SearchScreen extends StatefulWidget {
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
+
 // String _myName;
 class _SearchScreenState extends State<SearchScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
@@ -16,7 +17,7 @@ class _SearchScreenState extends State<SearchScreen> {
       new TextEditingController();
 
   QuerySnapshot searchSnapshot;
-   Widget searchList() {
+  Widget searchList() {
     return searchSnapshot != null
         ? ListView.builder(
             shrinkWrap: true,
@@ -30,7 +31,6 @@ class _SearchScreenState extends State<SearchScreen> {
           )
         : Container();
   }
-
 
   initiateSearch() {
     databaseMethods
@@ -46,21 +46,26 @@ class _SearchScreenState extends State<SearchScreen> {
 
   //create Chatroom
   createChatroomAndStartConversation({String userName}) {
-   if(userName != Constants.myName){
-      String chatRoomId= getChatRoomId(userName, Constants.myName);
-    List<String> users =[userName, Constants.myName];
-    Map<String, dynamic> chatRoomMap ={ "users":users,"chatroomId":chatRoomId};
-    DatabaseMethods().createChatRoom(chatRoomId,chatRoomMap);
-    Navigator.push(context, MaterialPageRoute(builder: (context)=> ConversationScreen(chatRoomId)));
-   }
-   else{
-     print("you cannot send message to yourself");
-   }
+    if (userName != Constants.myName) {
+      String chatRoomId = getChatRoomId(userName, Constants.myName);
+      List<String> users = [userName, Constants.myName];
+      Map<String, dynamic> chatRoomMap = {
+        "users": users,
+        "chatroomId": chatRoomId
+      };
+      DatabaseMethods().createChatRoom(chatRoomId, chatRoomMap);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => ConversationScreen(chatRoomId)));
+    } else {
+      print("you cannot send message to yourself");
+    }
   }
 
-Widget SearchTile({String userName,String userEmail}){
-   return Container(
-      padding: EdgeInsets.all(20),
+  Widget SearchTile({String userName, String userEmail}) {
+    return Container(
+        padding: EdgeInsets.all(20),
         color: Colors.black,
         child: Row(
           children: [
@@ -76,7 +81,7 @@ Widget SearchTile({String userName,String userEmail}){
             ]),
             Spacer(),
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 createChatroomAndStartConversation(userName: userName);
               },
               child: Container(
@@ -89,68 +94,64 @@ Widget SearchTile({String userName,String userEmail}){
             )
           ],
         ));
-}
- 
+  }
+
   @override
   void initState() {
     super.initState();
   }
 
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Search'),
-        ),
-        body: Container(
-            child: Column( 
-          children: [
-            Container(
-              color: Colors.grey,
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                    controller: searchtextEditingController,
-                    decoration: InputDecoration(
-                        hintText: 'Search Username',
-                        hintStyle: TextStyle(color: Colors.white54),
-                        border: InputBorder.none),
-                  )),
-                  GestureDetector(
-                    onTap: () {
-                      initiateSearch();
-                    },
-                    child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                          const Color(0x36FFFFFF),
-                          const Color(0x0FFFFFFF),
-                        ])),
-                        padding: EdgeInsets.all(12),
-                        child: Icon(Icons.search)),
-                  ),
-                ],
-              ),
+        // appBar: AppBar(
+        //   title: Text('Search'),
+        // ),
+        body: SafeArea(
+      child: Column(
+        children: [
+          Container(
+            color: Colors.grey,
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+            child: Row(
+              children: [
+                Expanded(
+                    child: TextField(
+                  controller: searchtextEditingController,
+                  decoration: InputDecoration(
+                      hintText: 'Search Username',
+                      hintStyle: TextStyle(color: Colors.black),
+                      border: InputBorder.none),
+                )),
+                GestureDetector(
+                  onTap: () {
+                    initiateSearch();
+                  },
+                  child: Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                          gradient: LinearGradient(colors: [
+                        const Color(0x36FFFFFF),
+                        const Color(0x0FFFFFFF),
+                      ])),
+                      padding: EdgeInsets.all(12),
+                      child: Icon(Icons.search)),
+                ),
+              ],
             ),
-            searchList(),
-          ],
-          
-        ),
-        
-        ));
+          ),
+          searchList(),
+        ],
+      ),
+    ));
   }
 }
 
- getChatRoomId(String a, String b) {
-    if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
-      return "$b\_$a";
-    } else {
-      return "$a\_$b";
-    }
+getChatRoomId(String a, String b) {
+  if (a.substring(0, 1).codeUnitAt(0) > b.substring(0, 1).codeUnitAt(0)) {
+    return "$b\_$a";
+  } else {
+    return "$a\_$b";
   }
+}

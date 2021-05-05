@@ -5,9 +5,7 @@ import 'package:messenger/services/database.dart';
 import 'package:messenger/views/conversation.dart';
 import 'package:messenger/widget/widget.dart';
 
-
 class SearchForGroup extends StatefulWidget {
-
   final String chatRoomId;
   SearchForGroup({this.chatRoomId});
   @override
@@ -15,16 +13,16 @@ class SearchForGroup extends StatefulWidget {
 }
 
 class _SearchForGroupState extends State<SearchForGroup> {
- DatabaseMethods databaseMethods = new DatabaseMethods();
+  DatabaseMethods databaseMethods = new DatabaseMethods();
   TextEditingController searchtextEditingController =
       new TextEditingController();
-      int flag=0;
-      String chatRoomIdFinal;
-      List<String> users =[];
-      
+  int flag = 0;
+  String chatRoomIdFinal;
+  List<String> users = [];
+
   QuerySnapshot searchSnapshot;
 
-   Widget searchList() {
+  Widget searchList() {
     return searchSnapshot != null
         ? ListView.builder(
             shrinkWrap: true,
@@ -36,9 +34,8 @@ class _SearchForGroupState extends State<SearchForGroup> {
               );
             },
           )
-        : Container(color: Colors.pink, child: Text('Taler'));
+        : Container();
   }
-
 
   initiateSearch() {
     databaseMethods
@@ -54,36 +51,37 @@ class _SearchForGroupState extends State<SearchForGroup> {
 
   //create Chatroom
   createChatroomAndStartConversation({String userName}) {
-
-   if(userName != Constants.myName){
-      String chatRoomIdFinal=widget.chatRoomId;
-    if(users.length==0){
-      users.add(Constants.myName);
-      users.add(userName);
-      print('added successfully');
+    if (userName != Constants.myName) {
+      String chatRoomIdFinal = widget.chatRoomId;
+      if (users.length == 0) {
+        users.add(Constants.myName);
+        users.add(userName);
+        print('added successfully');
+      } else {
+        users.add(userName);
+        print('added the other successfully ');
+      }
+    } else {
+      print("you cannot send message to yourself");
     }
-    else
-    {
-      users.add(userName);
-      print('added the other successfully ');
-    }
-   }
-   else{
-     print("you cannot send message to yourself");
-   }
   }
-  createChatroom()
-  {
+
+  createChatroom() {
     print(chatRoomIdFinal);
-     Map<String, dynamic> chatRoomMap ={ "users":users,"chatroomId":widget.chatRoomId};
-    DatabaseMethods().createChatRoom(widget.chatRoomId,chatRoomMap);
-     Navigator.push(context, MaterialPageRoute(builder: (context)=> ConversationScreen(widget.chatRoomId)));
-
+    Map<String, dynamic> chatRoomMap = {
+      "users": users,
+      "chatroomId": widget.chatRoomId
+    };
+    DatabaseMethods().createChatRoom(widget.chatRoomId, chatRoomMap);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ConversationScreen(widget.chatRoomId)));
   }
 
-Widget SearchTile({String userName,String userEmail}){
-   return Container(
-      padding: EdgeInsets.all(20),
+  Widget SearchTile({String userName, String userEmail}) {
+    return Container(
+        padding: EdgeInsets.all(20),
         color: Colors.black,
         child: Column(
           children: [
@@ -101,7 +99,7 @@ Widget SearchTile({String userName,String userEmail}){
                 ]),
                 Spacer(),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     createChatroomAndStartConversation(userName: userName);
                   },
                   child: Container(
@@ -114,17 +112,14 @@ Widget SearchTile({String userName,String userEmail}){
                 )
               ],
             ),
-            
           ],
         ));
-}
- 
+  }
+
   @override
   void initState() {
     super.initState();
   }
-
- 
 
   @override
   Widget build(BuildContext context) {
@@ -133,62 +128,64 @@ Widget SearchTile({String userName,String userEmail}){
           title: Text('Search For Group'),
         ),
         body: Container(
-            child: Column( 
-          children: [
-            Container(
-              color: Colors.grey,
-              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                      child: TextField(
-                    controller: searchtextEditingController,
-                    decoration: InputDecoration(
-                        hintText: 'search username',
-                        hintStyle: TextStyle(color: Colors.white54),
-                        border: InputBorder.none),
-                  )),
-                  GestureDetector(
-                    onTap: () {
-                      initiateSearch();
-                    },
-                    child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                          const Color(0x36FFFFFF),
-                          const Color(0x0FFFFFFF),
-                        ])),
-                        padding: EdgeInsets.all(12),
-                        child: Icon(Icons.search)),
-                  ),
-                ],
+          child: Column(
+            children: [
+              Container(
+                color: Colors.grey,
+                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: TextField(
+                      controller: searchtextEditingController,
+                      decoration: InputDecoration(
+                          hintText: 'Search Username',
+                          hintStyle: TextStyle(
+                              color: Colors.black, fontStyle: FontStyle.italic),
+                          border: InputBorder.none),
+                    )),
+                    GestureDetector(
+                      onTap: () {
+                        initiateSearch();
+                      },
+                      child: Container(
+                          height: 40,
+                          width: 40,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                            const Color(0x36FFFFFF),
+                            const Color(0x0FFFFFFF),
+                          ])),
+                          padding: EdgeInsets.all(12),
+                          child: Icon(Icons.search)),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            searchList(),
-            Container(
-              child:
-                GestureDetector(
-                    onTap: () {
-                      flag=1;
-                      createChatroom();
-                    },
-                    child: Container(
+              SizedBox(
+                height: 20,
+              ),
+              searchList(),
+              Container(
+                child: GestureDetector(
+                  onTap: () {
+                    flag = 1;
+                    createChatroom();
+                  },
+                  child: Container(
                     decoration: BoxDecoration(
                         color: Colors.blue,
                         borderRadius: BorderRadius.circular(30)),
-                    child: Text('Done'),
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Text(
+                      'Done',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   ),
-                  ),
-            )
-          ],
-          
-        ),
-        
+                ),
+              )
+            ],
+          ),
         ));
   }
 }
-
-

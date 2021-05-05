@@ -73,7 +73,7 @@ class _ChatRoomState extends State<ChatRoom> {
             actions: <Widget>[
               MaterialButton(
                   elevation: 5.0,
-                  child: Text('Ok'),
+                  child: Text('OKAY'),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -89,15 +89,19 @@ class _ChatRoomState extends State<ChatRoom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // backgroundColor: Colors.red[700],
       appBar: AppBar(
-        title: Text('Messages'),
+        title: Padding(
+          padding: const EdgeInsets.only(right: 14.0),
+          child: Text('Messages'),
+        ),
         actions: [
           GestureDetector(
               onTap: () {
                 return showDialog(
                   context: context,
                   builder: (ctx) => AlertDialog(
-                    title: Text("PPB"),
+                    title: Text("PPB ChitChat You"),
                     content: Text("Are you sure you want to log out?"),
                     actions: <Widget>[
                       FlatButton(
@@ -131,7 +135,7 @@ class _ChatRoomState extends State<ChatRoom> {
                   padding: EdgeInsets.symmetric(horizontal: 16),
                   child: Icon(Icons.group))),
           Container(
-              width: 50,
+              width: 95,
               height: 30,
               child: Center(child: Text(Constants.myName.toUpperCase())))
         ],

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:messenger/helper/constants.dart';
 import 'package:messenger/views/chatRoomsScreen.dart';
+import 'package:messenger/views/searchForGroup.dart';
 import 'package:messenger/widget/widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
@@ -79,14 +80,17 @@ class _ConversationScreenState extends State<ConversationScreen> {
                       // if (snapshot.data.docs[index].data()["sendBy"] ==
                       //     Constants.myName) {
                         return MessageTile(
+                          snapshot.data.docs[index].data()["sendBy"],
                           null,
                           snapshot.data.docs[index].data()["sendBy"] == Constants.myName,
                           snapshot.data.docs[index].data()["url"],
                           value = 2,
+
                         );
                     // }
                     } else {
                       return MessageTile(
+                        snapshot.data.docs[index].data()["sendBy"],
                         snapshot.data.docs[index].data()["message"],
                         snapshot.data.docs[index].data()["sendBy"] ==
                             Constants.myName,
@@ -180,8 +184,19 @@ class _ConversationScreenState extends State<ConversationScreen> {
     onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatRoom()))
   ), 
             title: Text("${widget.usernamee.toUpperCase()}",
-                style: biggerTextStyle())),
-          
+                style: biggerTextStyle()),
+                actions: [
+                  GestureDetector(
+              onTap: () {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> SearchForGroup(chatRoomId: widget.chatRoomId)));
+          //  SearchForGroup(chatRoomId: widget.chatRoomId);
+              },
+              child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Icon(Icons.add))),
+                ],
+                ),
+                
         body: SingleChildScrollView(child: Container(
         
             child: Column(
@@ -269,11 +284,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
 }
 
 class MessageTile extends StatelessWidget {
+  final String sender;
   final String message;
   final bool isSendByMe;
   final String record;
   final int value;
-  MessageTile(this.message, this.isSendByMe, this.record, this.value);
+  MessageTile(this.sender,this.message, this.isSendByMe, this.record, this.value);
 
   @override
   Widget build(BuildContext context) {
@@ -310,14 +326,26 @@ class MessageTile extends StatelessWidget {
                       bottomRight: Radius.circular(23),
                     )),
           child: value == 1
-              ? Text(message,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                  ))
-              : Container(
-                  child: Image.network(record),
-                )),
+              ? Container(
+                child: Column(
+                  children: [
+                    Text(sender),
+                    Text(message,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                        )),
+                  ],
+                ),
+              )
+              : Column(
+                children: [
+                   Text(sender),
+                  Container(
+                      child: Image.network(record),
+                    ),
+                ],
+              )),
     );
   }
 }

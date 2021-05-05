@@ -25,7 +25,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   Stream chatMessagesStream;
   final picker = ImagePicker();
-  String one, two;
+  String text1, imgString;
 
   Widget _buildBody(BuildContext context, bool name) {
     return StreamBuilder<QuerySnapshot>(
@@ -53,7 +53,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   Widget buildListItem(BuildContext context, DocumentSnapshot data, bool name) {
     final record = Record.fromSnapshot(data);
-    int value;
+   
     return Padding(
       key: ValueKey(record.location),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -67,7 +67,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   Widget get ChatMessageList {
-    int value;
+    int value=0;
     return StreamBuilder(
         stream: chatMessagesStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -76,15 +76,15 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
                     if (snapshot.data.docs[index].data()["message"] == null) {
-                      if (snapshot.data.docs[index].data()["sendBy"] ==
-                          Constants.myName) {
+                      // if (snapshot.data.docs[index].data()["sendBy"] ==
+                      //     Constants.myName) {
                         return MessageTile(
                           null,
-                          true,
+                          snapshot.data.docs[index].data()["sendBy"] == Constants.myName,
                           snapshot.data.docs[index].data()["url"],
                           value = 2,
                         );
-                      }
+                    // }
                     } else {
                       return MessageTile(
                         snapshot.data.docs[index].data()["message"],
@@ -101,12 +101,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   sendMessage() {
+    
     Map<String, dynamic> messageMap = {
       "message": messageController.text,
       "sendBy": Constants.myName,
       "time": DateTime.now().millisecondsSinceEpoch,
-      "location": one,
-      "url": two
+      "location": text1,
+      "url": imgString
     };
     databaseMethods.addConversationMessages(widget.chatRoomId, messageMap);
     messageController.text = "";
@@ -151,8 +152,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
       };
       await databaseMethods.addConversationMessages(
           widget.chatRoomId, messageMap);
-      one = text;
-      two = imageString;
+      text1 = text;
+      imgString = imageString;
     } catch (e) {
       print(e.message);
     }

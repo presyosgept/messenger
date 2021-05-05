@@ -57,7 +57,7 @@ class _SearchScreenState extends State<SearchScreen> {
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => ConversationScreen(chatRoomId,userName)));
+              builder: (context) => ConversationScreen(chatRoomId, userName)));
     } else {
       print("you cannot send message to yourself");
     }
@@ -108,43 +108,51 @@ class _SearchScreenState extends State<SearchScreen> {
           title: Text('Search'),
         ),
         body: SafeArea(
-      child: Column(
-        children: [
-          Container(
-            color: Colors.grey,
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Row(
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/backnew2.png'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Column(
               children: [
-                Expanded(
-                    child: TextField(
-                  controller: searchtextEditingController,
-                  decoration: InputDecoration(
-                      hintText: 'Search Username',
-                      hintStyle: TextStyle(color: Colors.black),
-                      border: InputBorder.none),
-                )),
-                GestureDetector(
-                  onTap: () {
-                    initiateSearch();
-                  },
-                  child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                        const Color(0x36FFFFFF),
-                        const Color(0x0FFFFFFF),
-                      ])),
-                      padding: EdgeInsets.all(12),
-                      child: Icon(Icons.search)),
+                Container(
+                  color: Colors.grey,
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: TextField(
+                        controller: searchtextEditingController,
+                        decoration: InputDecoration(
+                            hintText: 'Search Username',
+                            hintStyle: TextStyle(color: Colors.black),
+                            border: InputBorder.none),
+                      )),
+                      GestureDetector(
+                        onTap: () {
+                          initiateSearch();
+                        },
+                        child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(colors: [
+                              const Color(0x36FFFFFF),
+                              const Color(0x0FFFFFFF),
+                            ])),
+                            padding: EdgeInsets.all(12),
+                            child: Icon(Icons.search)),
+                      ),
+                    ],
+                  ),
                 ),
+                searchList(),
               ],
             ),
           ),
-          searchList(),
-        ],
-      ),
-    ));
+        ));
   }
 }
 

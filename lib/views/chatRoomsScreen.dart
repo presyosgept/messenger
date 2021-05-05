@@ -88,75 +88,82 @@ class _ChatRoomState extends State<ChatRoom> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // backgroundColor: Colors.red[700],
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Padding(
-          padding: const EdgeInsets.only(right: 14.0),
-          child: Text('Messages'),
+    return SafeArea(
+        child: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/images/backnew2.png'),
+          fit: BoxFit.cover,
         ),
-        actions: [
+      ),
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: Padding(
+            padding: const EdgeInsets.only(right: 14.0),
+            child: Text('Messages'),
+          ),
+          actions: [
             GestureDetector(
-              onTap: () {
-                createDialog(context);
-              },
-              child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(Icons.group))),
-          GestureDetector(
-              onTap: () {
-                return showDialog(
-                  context: context,
-                  builder: (ctx) => AlertDialog(
-                    title: Text("PPB ChitChat You"),
-                    content: Text("Are you sure you want to log out?"),
-                    actions: <Widget>[
-                      FlatButton(
-                        onPressed: () {
-                          authMethods.signOut();
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Authenticate()));
-                        },
-                        child: Text("YES"),
-                      ),
-                      FlatButton(
-                        onPressed: () {
-                          Navigator.of(ctx).pop();
-                          
-                        },
-                        child: Text("NO"),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(Icons.exit_to_app))),
-        
-          // Container(
-          //     width: 95,
-          //     height: 30,
-          //     child: Center(child: 
-          //    // Text(Constants.myName.toUpperCase())
-          //      Text("${Constants.myName.toUpperCase()}",
-          //     )))
-        ],
-      ),
-      body: ChatRoomList(),
-      floatingActionButton: Container(
-        child: FloatingActionButton(
-          child: Icon(Icons.search),
-          onPressed: () {
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => SearchScreen()));
-          },
+                onTap: () {
+                  createDialog(context);
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Icon(Icons.group))),
+            GestureDetector(
+                onTap: () {
+                  return showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                      title: Text("PPB ChitChat You"),
+                      content: Text("Are you sure you want to log out?"),
+                      actions: <Widget>[
+                        FlatButton(
+                          onPressed: () {
+                            authMethods.signOut();
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Authenticate()));
+                          },
+                          child: Text("YES"),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            Navigator.of(ctx).pop();
+                          },
+                          child: Text("NO"),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    child: Icon(Icons.exit_to_app))),
+
+            // Container(
+            //     width: 95,
+            //     height: 30,
+            //     child: Center(child:
+            //    // Text(Constants.myName.toUpperCase())
+            //      Text("${Constants.myName.toUpperCase()}",
+            //     )))
+          ],
+        ),
+        body: ChatRoomList(),
+        floatingActionButton: Container(
+          child: FloatingActionButton(
+            child: Icon(Icons.search),
+            onPressed: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => SearchScreen()));
+            },
+          ),
         ),
       ),
-    );
+    ));
   }
 }
 
@@ -171,7 +178,8 @@ class ChatRoomTile extends StatelessWidget {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => ConversationScreen(chatRoomId,userName)));
+                builder: (context) =>
+                    ConversationScreen(chatRoomId, userName)));
       },
       child: Container(
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),

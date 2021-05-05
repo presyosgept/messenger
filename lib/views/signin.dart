@@ -76,9 +76,9 @@ class _SignInState extends State<SignIn> {
                   Container(
                     child: Center(child: CircularProgressIndicator()),
                   ),
-                  Text(
-                      "The PBB account doesn't exist. Enter a different email and password", //TARONGA HERE
-                      style: biggerTextStyle())
+                  // Text(
+                  //     "The PBB account doesn't exist. Enter a different email and password", //TARONGA HERE
+                  //     style: biggerTextStyle())
                 ],
               )
             : Container(

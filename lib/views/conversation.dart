@@ -13,7 +13,7 @@ import 'package:messenger/services/database.dart';
 class ConversationScreen extends StatefulWidget {
   final String chatRoomId;
   final String usernamee;
-  ConversationScreen(this.chatRoomId,this.usernamee);
+  ConversationScreen(this.chatRoomId, this.usernamee);
 
   @override
   _ConversationScreenState createState() => _ConversationScreenState();
@@ -25,7 +25,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   DatabaseMethods databaseMethods = new DatabaseMethods();
   Stream chatMessagesStream;
   final picker = ImagePicker();
-  String one, two;
+  String text1, imgString;
 
   Widget _buildBody(BuildContext context, bool name) {
     return StreamBuilder<QuerySnapshot>(
@@ -53,7 +53,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
   Widget buildListItem(BuildContext context, DocumentSnapshot data, bool name) {
     final record = Record.fromSnapshot(data);
-    int value;
+
     return Padding(
       key: ValueKey(record.location),
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -67,7 +67,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
   }
 
   Widget get ChatMessageList {
-    int value;
+    int value = 0;
     return StreamBuilder(
         stream: chatMessagesStream,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -76,17 +76,20 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   itemCount: snapshot.data.docs.length,
                   itemBuilder: (context, index) {
                     if (snapshot.data.docs[index].data()["message"] == null) {
-                      if (snapshot.data.docs[index].data()["sendBy"] ==
-                          Constants.myName) {
-                        return MessageTile(
-                          null,
-                          true,
-                          snapshot.data.docs[index].data()["url"],
-                          value = 2,
-                        );
-                      }
+                      // if (snapshot.data.docs[index].data()["sendBy"] ==
+                      //     Constants.myName) {
+                      return MessageTile(
+                        snapshot.data.docs[index].data()["sendBy"],
+                        null,
+                        snapshot.data.docs[index].data()["sendBy"] ==
+                            Constants.myName,
+                        snapshot.data.docs[index].data()["url"],
+                        value = 2,
+                      );
+                      // }
                     } else {
                       return MessageTile(
+                        snapshot.data.docs[index].data()["sendBy"],
                         snapshot.data.docs[index].data()["message"],
                         snapshot.data.docs[index].data()["sendBy"] ==
                             Constants.myName,
@@ -105,8 +108,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
       "message": messageController.text,
       "sendBy": Constants.myName,
       "time": DateTime.now().millisecondsSinceEpoch,
-      "location": one,
-      "url": two
+      "location": text1,
+      "url": imgString
     };
     databaseMethods.addConversationMessages(widget.chatRoomId, messageMap);
     messageController.text = "";
@@ -151,8 +154,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
       };
       await databaseMethods.addConversationMessages(
           widget.chatRoomId, messageMap);
-      one = text;
-      two = imageString;
+      text1 = text;
+      imgString = imageString;
     } catch (e) {
       print(e.message);
     }
@@ -174,24 +177,22 @@ class _ConversationScreenState extends State<ConversationScreen> {
 //        resizeToAvoidBottomInset: false,
 // resizeToAvoidBottomPadding: false,
         appBar: AppBar(
-          leading: IconButton(
-    icon: Icon(Icons.arrow_back, color: Colors.black),
-    onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatRoom()))
-  ), 
+            leading: IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.black),
+                onPressed: () => Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => ChatRoom()))),
             title: Text("${widget.usernamee.toUpperCase()}",
                 style: biggerTextStyle())),
-          
-        body: SingleChildScrollView(child: Container(
-        
-            child: Column(
-            //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        body: SingleChildScrollView(
+            child: Container(
+                child: Column(
+          //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-           // Container(height:70,child: ChatMessageList()),
-           Container(
-       height: MediaQuery.of(context).size.height /1.3,
-             child: ChatMessageList),
+            // Container(height:70,child: ChatMessageList()),
             Container(
-              
+                height: MediaQuery.of(context).size.height / 1.3,
+                child: ChatMessageList),
+            Container(
               alignment: Alignment.bottomCenter,
               child: Container(
                 height: 70,
@@ -268,23 +269,24 @@ class _ConversationScreenState extends State<ConversationScreen> {
 }
 
 class MessageTile extends StatelessWidget {
+  final String sender;
   final String message;
   final bool isSendByMe;
   final String record;
   final int value;
-  MessageTile(this.message, this.isSendByMe, this.record, this.value);
+  MessageTile(
+      this.sender, this.message, this.isSendByMe, this.record, this.value);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-    
       padding: EdgeInsets.only(
           left: isSendByMe ? 0 : 24, right: isSendByMe ? 24 : 0),
       margin: EdgeInsets.symmetric(vertical: 8),
       width: MediaQuery.of(context).size.width,
       alignment: isSendByMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-         // height: 60,
+          // height: 60,
           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -309,13 +311,25 @@ class MessageTile extends StatelessWidget {
                       bottomRight: Radius.circular(23),
                     )),
           child: value == 1
-              ? Text(message,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 17,
-                  ))
-              : Container(
-                  child: Image.network(record),
+              ? Container(
+                  child: Column(
+                    children: [
+                      Text(sender),
+                      Text(message,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                          )),
+                    ],
+                  ),
+                )
+              : Column(
+                  children: [
+                    Text(sender),
+                    Container(
+                      child: Image.network(record),
+                    ),
+                  ],
                 )),
     );
   }

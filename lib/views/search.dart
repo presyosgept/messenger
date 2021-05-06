@@ -65,8 +65,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget SearchTile({String userName, String userEmail}) {
     return Container(
-        padding: EdgeInsets.all(20),
-        color: Colors.black,
+       padding: EdgeInsets.symmetric(horizontal: 24, vertical: 15), 
+        // color: Colors.black,
+        color: Colors.transparent,
         child: Row(
           children: [
             Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -86,9 +87,12 @@ class _SearchScreenState extends State<SearchScreen> {
               },
               child: Container(
                 decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(30)),
-                child: Text('Message'),
+                child: Text('Message',
+                style: TextStyle(
+                  color: Colors.black
+                ),),
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               ),
             )
@@ -106,43 +110,52 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Search'),
+          backgroundColor: Colors.brown[300],
         ),
         body: SafeArea(
-      child: Column(
-        children: [
-          Container(
-            color: Colors.grey,
-            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-            child: Row(
-              children: [
-                Expanded(
-                    child: TextField(
-                  controller: searchtextEditingController,
-                  decoration: InputDecoration(
-                      hintText: 'Search Username',
-                      hintStyle: TextStyle(color: Colors.black),
-                      border: InputBorder.none),
-                )),
-                GestureDetector(
-                  onTap: () {
-                    initiateSearch();
-                  },
-                  child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                          gradient: LinearGradient(colors: [
-                        const Color(0x36FFFFFF),
-                        const Color(0x0FFFFFFF),
-                      ])),
-                      padding: EdgeInsets.all(12),
-                      child: Icon(Icons.search)),
-                ),
-              ],
+      child: Container(
+                decoration: BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage('assets/images/cm1.png'),
+            fit: BoxFit.cover,
+          )),
+        child: Column(
+          children: [
+            Container(
+              color: Colors.brown[300],
+              padding: EdgeInsets.symmetric(horizontal: 24, vertical: 5),
+              child: Row(
+                children: [
+                  Expanded(
+                      child: TextField(
+                        cursorColor: Colors.black,
+                    controller: searchtextEditingController,
+                    decoration: InputDecoration(
+                        hintText: 'Search Username',
+                        hintStyle: TextStyle(color: Colors.black, fontStyle: FontStyle.italic),
+                        border: InputBorder.none),
+                  )),
+                  GestureDetector(
+                    onTap: () {
+                      initiateSearch();
+                    },
+                    child: Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                          Colors.transparent,
+                          Colors.transparent,
+                        ])),
+                        padding: EdgeInsets.all(12),
+                        child: Icon(Icons.search)),
+                  ),
+                ],
+              ),
             ),
-          ),
-          searchList(),
-        ],
+            searchList(),
+          ],
+        ),
       ),
     ));
   }

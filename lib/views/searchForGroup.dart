@@ -86,8 +86,8 @@ class _SearchForGroupState extends State<SearchForGroup> {
 
   Widget SearchTile({String userName, String userEmail}) {
     return Container(
-        padding: EdgeInsets.all(20),
-        color: Colors.black,
+        padding: EdgeInsets.symmetric(horizontal: 24, vertical: 2),
+          color: Colors.transparent,
         child: Column(
           children: [
             Row(
@@ -109,10 +109,16 @@ class _SearchForGroupState extends State<SearchForGroup> {
                      return showDialog(
                   context: context,
                   builder: (ctx) => AlertDialog(
+                    backgroundColor: Colors.brown[200],
                     title: Text("GROUPCHAT"),
-                    content: Text("Are you sure you want to add this person?"),
+                    content: Text("Are you sure you want to add this person?",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    ),),
                     actions: <Widget>[
                       FlatButton(
+                        minWidth: 12,
+                        color: Colors.brown[400],
                         onPressed: () {
                         createChatroomAndStartConversation(userName: userName);
                         searchtextEditingController.text="";
@@ -126,6 +132,8 @@ class _SearchForGroupState extends State<SearchForGroup> {
                         child: Text("YES"),
                       ),
                       FlatButton(
+                        minWidth: 12,
+                        color: Colors.brown[400],
                         onPressed: () {
                           Navigator.of(ctx).pop();
                         },
@@ -137,9 +145,12 @@ class _SearchForGroupState extends State<SearchForGroup> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                        color: Colors.white,
                         borderRadius: BorderRadius.circular(30)),
-                    child: Text('Add'),
+                    child: Text('Add',
+                    style: TextStyle(
+                      color: Colors.black
+                    ),),
                     padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   ),
                 )
@@ -160,17 +171,24 @@ class _SearchForGroupState extends State<SearchForGroup> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Search For Group'),
+            backgroundColor: Colors.brown[300],
         ),
         body: Container(
+                 decoration: BoxDecoration(
+              image: DecorationImage(
+            image: AssetImage('assets/images/cm2.png'),
+            fit: BoxFit.cover,
+          )),
           child: Column(
             children: [
               Container(
-                color: Colors.grey,
+               color: Colors.brown[300],
                 padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
                 child: Row(
                   children: [
                     Expanded(
                         child: TextField(
+                          cursorColor: Colors.black,
                       controller: searchtextEditingController,
                       decoration: InputDecoration(
                           hintText: 'Search Username',
@@ -191,8 +209,8 @@ class _SearchForGroupState extends State<SearchForGroup> {
                           width: 40,
                           decoration: BoxDecoration(
                               gradient: LinearGradient(colors: [
-                            const Color(0x36FFFFFF),
-                            const Color(0x0FFFFFFF),
+                             Colors.transparent,
+                             Colors.transparent,
                           ])),
                           padding: EdgeInsets.all(12),
                           child: Icon(Icons.search)),
@@ -204,6 +222,9 @@ class _SearchForGroupState extends State<SearchForGroup> {
                 height: 20,
               ),
               searchList(),
+               SizedBox(
+                height: 20,
+              ),
               Container(
                 child: GestureDetector(
                   onTap: () {
@@ -212,11 +233,11 @@ class _SearchForGroupState extends State<SearchForGroup> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.blue,
+                          color: Colors.deepOrange[200],
                         borderRadius: BorderRadius.circular(30)),
                     child: Text(
                       'Done',
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 16,),
                     ),
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                   ),

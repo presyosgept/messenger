@@ -66,13 +66,20 @@ class _ChatRoomState extends State<ChatRoom> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Name of the group'),
+            backgroundColor: Colors.brown[200],
+            title: Text('Name of the Group'),
             content: TextField(
+              
+              cursorColor: Colors.black,
               controller: chatId,
+              decoration: InputDecoration(
+              focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.black))
+              ),
             ),
             actions: <Widget>[
-              MaterialButton(
-                  elevation: 5.0,
+              FlatButton(
+                color: Colors.brown[400],
+                  // elevation: 5.0,
                   child: Text('OKAY'),
                   onPressed: () {
                     Navigator.pushReplacement(
@@ -91,6 +98,7 @@ class _ChatRoomState extends State<ChatRoom> {
     return Scaffold(
       // backgroundColor: Colors.red[700],
       appBar: AppBar(
+        backgroundColor: Colors.brown[300],
         automaticallyImplyLeading: false,
         title: Padding(
           padding: const EdgeInsets.only(right: 14.0),
@@ -103,16 +111,21 @@ class _ChatRoomState extends State<ChatRoom> {
               },
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(Icons.group))),
+                  child: Icon(Icons.group_add, size: 28,))),
           GestureDetector(
               onTap: () {
                 return showDialog(
                   context: context,
                   builder: (ctx) => AlertDialog(
-                    title: Text("PPB ChitChat You"),
-                    content: Text("Are you sure you want to log out?"),
+                    backgroundColor: Colors.brown[200],
+                    content: Text("Are you sure you want to log out?",
+                    style: TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold,
+                    ),),
                     actions: <Widget>[
                       FlatButton(
+                        minWidth: 12,
+                        color: Colors.brown[400],
                         onPressed: () {
                           authMethods.signOut();
                           Navigator.pushReplacement(
@@ -123,6 +136,8 @@ class _ChatRoomState extends State<ChatRoom> {
                         child: Text("YES"),
                       ),
                       FlatButton(
+                        minWidth: 12,
+                        color: Colors.brown[400],
                         onPressed: () {
                           Navigator.of(ctx).pop();
                           
@@ -146,10 +161,18 @@ class _ChatRoomState extends State<ChatRoom> {
           //     )))
         ],
       ),
-      body: ChatRoomList(),
+      body: 
+      Container(
+          decoration: BoxDecoration(
+          image: DecorationImage(
+        image: AssetImage('assets/images/cm2.png'),
+        fit: BoxFit.cover,
+      )),
+        child: ChatRoomList()),
       floatingActionButton: Container(
         child: FloatingActionButton(
-          child: Icon(Icons.search),
+          backgroundColor: Colors.deepOrange[200],
+          child: Icon(Icons.add,color: Colors.black,),
           onPressed: () {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => SearchScreen()));
@@ -182,7 +205,7 @@ class ChatRoomTile extends StatelessWidget {
                   width: 40,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                      color: Colors.blue,
+                      color: Colors.deepOrange[200],
                       borderRadius: BorderRadius.circular(40)),
                   child: Text("${userName.substring(0, 1).toUpperCase()}",
                       style: biggerTextStyle())),

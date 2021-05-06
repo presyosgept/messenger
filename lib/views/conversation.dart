@@ -179,8 +179,9 @@ class _ConversationScreenState extends State<ConversationScreen> {
 //        resizeToAvoidBottomInset: false,
 // resizeToAvoidBottomPadding: false,
         appBar: AppBar(
+          backgroundColor: Colors.brown[400],
           leading: IconButton(
-    icon: Icon(Icons.arrow_back, color: Colors.black),
+    icon: Icon(Icons.arrow_back, color: Colors.white),
     onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatRoom()))
   ), 
             title: Text("${widget.usernamee.toUpperCase()}",
@@ -193,93 +194,104 @@ class _ConversationScreenState extends State<ConversationScreen> {
               },
               child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(Icons.add))),
-                ],
+                  child: Icon(Icons.group_add, color: Colors.deepOrange[200], size: 30,)),
+                  )],
                 ),
                 
-        body: SingleChildScrollView(child: Container(
-        
-            child: Column(
-            //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-           // Container(height:70,child: ChatMessageList()),
-           Container(
+        body: Container(
+               decoration: BoxDecoration(
+          image: DecorationImage(
+        image: AssetImage('assets/images/cm1.png'),
+        fit: BoxFit.cover,
+      )),
+          child: SingleChildScrollView(child: Container(
+          
+              child: Column(
+              //  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+             // Container(height:70,child: ChatMessageList()),
+             Container(
        height: MediaQuery.of(context).size.height /1.3,
-             child: ChatMessageList),
-            Container(
-              
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                height: 70,
-                color: Colors.grey,
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: TextField(
-                      controller: messageController,
-                      decoration: InputDecoration(
-                          hintText: 'Aa',
-                          hintStyle: TextStyle(color: Colors.white54),
-                          border: InputBorder.none),
-                    )),
-                    Container(
-                      height: 80,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(30.0),
-                        child: TextButton(
-                            child: Icon(
-                              Icons.photo_album,
-                              color: Colors.red,
-                              size: 30,
-                            ),
-                            onPressed: () {
-                              getImage();
-                            }),
+               child: ChatMessageList),
+              Container(
+                
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  height: 70,
+                  color: Colors.brown[400],
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: TextField(
+                            style: TextStyle(color: Colors.white),
+                        controller: messageController,
+                        decoration: InputDecoration(
+                            hintText: "Aa",
+                            hintStyle: TextStyle(color: Colors.white54),
+                            border: InputBorder.none),
+                      )),
+                      Container(
+                        height: 80,
+                        width: 40,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30.0),
+                          child: TextButton(
+                              child: Icon(
+                                Icons.photo,
+                                color: Colors.deepOrange[200],
+                                size: 30,
+                              ),
+                              onPressed: () {
+                                getImage();
+                              }),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        pickImage();
-                      },
-                      child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                            const Color(0x36FFFFFF),
-                            const Color(0x0FFFFFFF),
-                          ])),
-                          padding: EdgeInsets.all(12),
-                          child: Icon(Icons.camera_alt)),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        sendMessage();
-                      },
-                      child: Container(
-                          height: 40,
-                          width: 40,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                            const Color(0x36FFFFFF),
-                            const Color(0x0FFFFFFF),
-                          ])),
-                          padding: EdgeInsets.all(12),
-                          child: Icon(Icons.send)),
-                    ),
-                  ],
+                      SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          pickImage();
+                        },
+                        child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(colors: [
+                              Colors.transparent,
+                              Colors.transparent,
+                            ])),
+                            padding: EdgeInsets.all(12),
+                            child: Icon(Icons.camera_alt_rounded,
+                            color: Colors.deepOrange[200],)),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          sendMessage();
+                        },
+                        child: Container(
+                            height: 40,
+                            width: 30,
+                            decoration: BoxDecoration(
+                                gradient: LinearGradient(colors: [
+                              Colors.transparent,
+                              Colors.transparent,
+                            ])),
+                            padding: EdgeInsets.all(12),
+                            child: Icon(Icons.send,
+                            color: Colors.deepOrange[200],)),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ))));
+            ],
+          ))),
+        ));
   }
 }
 
@@ -307,8 +319,9 @@ class MessageTile extends StatelessWidget {
               gradient: LinearGradient(
                   colors: isSendByMe
                       ? [
-                          const Color(0xff007EF4),
-                          const Color(0xff2A75BC),
+                          
+                          Colors.deepPurple[400],
+                          Colors.deepPurple[400],
                         ]
                       : [
                           const Color(0x1AFFFFFF),
@@ -329,7 +342,13 @@ class MessageTile extends StatelessWidget {
               ? Container(
                 child: Column(
                   children: [
-                    Text(sender),
+                    Text(sender.toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 17, fontWeight: FontWeight.bold
+                    ),),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(message,
                         style: TextStyle(
                           color: Colors.white,
@@ -340,7 +359,13 @@ class MessageTile extends StatelessWidget {
               )
               : Column(
                 children: [
-                   Text(sender),
+                   Text(sender.toUpperCase(),
+                   style: TextStyle(
+                     fontSize: 20, fontWeight: FontWeight.bold
+                   ),),
+                   SizedBox(
+                     height: 10,
+                   ),
                   Container(
                       child: Image.network(record),
                     ),
